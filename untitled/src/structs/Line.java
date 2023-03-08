@@ -1,12 +1,13 @@
+package structs;
+
+/***
+ * Data class for line meta information
+ */
 public class Line {
 
     private int num;
     private int countOfBytes;
     private int offset;
-
-    public Line() {
-
-    }
 
     public Line(int num, int countOfBytes, int offset) {
         this.num = num;
@@ -24,18 +25,6 @@ public class Line {
 
     public int getOffset() {
         return offset;
-    }
-
-    public void setNum(int num) {
-        this.num = num;
-    }
-
-    public void setCountOfBytes(int countOfBytes) {
-        this.countOfBytes = countOfBytes;
-    }
-
-    public void setOffset(int offset) {
-        this.offset = offset;
     }
 
     @Override

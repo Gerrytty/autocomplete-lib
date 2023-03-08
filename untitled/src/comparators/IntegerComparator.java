@@ -1,6 +1,11 @@
+package comparators;
+
 import java.util.Comparator;
 
-public class IntegerComparator  implements Comparator<String> {
+/***
+ * Comparator class for comparing nums in specific given column
+ */
+public class IntegerComparator implements Comparator<String> {
 
     int columnIndex;
 
@@ -19,17 +24,9 @@ public class IntegerComparator  implements Comparator<String> {
             return 1;
         }
 
-        int i1 = Integer.parseInt(obj1.split(",")[columnIndex]);
-        int i2 = Integer.parseInt(obj2.split(",")[columnIndex]);
+        double i1 = Double.parseDouble(obj1.split(",")[columnIndex]);
+        double i2 = Double.parseDouble(obj2.split(",")[columnIndex]);
 
-        if (i1 == i2) {
-            return 0;
-        }
-        else if (i1 > i2) {
-            return 1;
-        }
-        else {
-            return -1;
-        }
+        return Double.compare(i1, i2);
     }
 }

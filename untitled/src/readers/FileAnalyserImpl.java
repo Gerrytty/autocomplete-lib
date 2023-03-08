@@ -1,9 +1,14 @@
+package readers;
+
+import structs.Line;
+import structs.PrefixTree;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileAnalyser {
+public class FileAnalyserImpl implements FileAnalyser {
 
     private String pathToFile;
     private List<Line> lines;
@@ -11,7 +16,7 @@ public class FileAnalyser {
 
     private int prefixSize;
 
-    public FileAnalyser(String pathToFile, int prefixSize) {
+    public FileAnalyserImpl(String pathToFile, int prefixSize) {
         this.pathToFile = pathToFile;
         this.lines = new ArrayList<>();
         this.prefixSize = prefixSize;

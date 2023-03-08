@@ -1,6 +1,11 @@
+package structs;
+
 import java.util.ArrayList;
 import java.util.List;
 
+/***
+ * Prefix tree implementation
+ */
 public class PrefixTree {
 
     private Node root;
@@ -8,6 +13,12 @@ public class PrefixTree {
     public PrefixTree() {
         this.root = new Node("root");
     }
+
+    /***
+     * add to prefix tree word path with it's prefixes
+     * @param word (word to add)
+     * @param lineIndex (index of line that contain this word)
+     */
 
     public void addWord(String word, int lineIndex) {
 
@@ -40,6 +51,12 @@ public class PrefixTree {
 
     }
 
+    /***
+     * @param prefix (prefix that we search)
+     * @return the lines of most deep node given prefix
+     * if no path found return empty list
+     */
+
     public List<Integer> getPrefixLines(String prefix) {
 
         Node currNode = this.root;
@@ -67,4 +84,7 @@ public class PrefixTree {
         return currNode.getLines();
     }
 
+    public List<Node> getRootChildren() {
+        return root.getChildren();
+    }
 }

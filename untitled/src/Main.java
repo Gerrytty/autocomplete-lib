@@ -1,16 +1,37 @@
+import comparators.IntegerComparator;
+import comparators.StringsComparator;
+import readers.FileAnalyser;
+import readers.FileAnalyserImpl;
+import readers.LinesWalker;
+import readers.LinesWalkerImpl;
+import structs.Line;
+
 import java.io.*;
 import java.util.*;
 
 public class Main {
 
     static int prefixSize = 10;
+    static int columnIndex;
 
     public static void main(String[] args) throws IOException {
 
+        if (args.length > 0) {
+            columnIndex = Integer.parseInt(args[0]);
+            if (columnIndex < 1) {
+                System.out.println("incorrect index, indexing starts from 1");
+                columnIndex = 1;
+            }
+        }
+        else {
+            columnIndex = 0;
+        }
+
         // memorize a prefix tree in memory
-        FileAnalyser analyser = new FileAnalyser("/home/julia/Downloads/airports.csv", prefixSize);
+        FileAnalyser analyser = new FileAnalyserImpl("/home/julia/Downloads/airports.csv", prefixSize);
         analyser.buildTree();
 
+        // read user request
         Scanner scanner = new Scanner(System.in);
         String searchPrefix = scanner.nextLine();
         String correctPrefix;
@@ -25,28 +46,27 @@ public class Main {
                 correctPrefix = searchPrefix;
             }
 
+            // measure time only for search
             long timeStart = new Date().getTime();
 
             List<Line> lines = analyser.getLines();
+            List<Integer> prefixLines = analyser.getPrefixLines(columnIndex, correctPrefix);
 
-            List<Integer> prefixLines = analyser.getPrefixLines(1, correctPrefix);
-
-            System.out.println(prefixLines);
-
-            LinesWalker walker = new LinesWalker("/home/julia/Downloads/airports.csv");
+            // Random access for lines in file helper
+            LinesWalker walker = new LinesWalkerImpl("/home/julia/Downloads/airports.csv");
 
             int countFoundLines = 0;
 
             List<String> allLines = new ArrayList<>();
 
             for (int line : prefixLines) {
+
                 String findLine = walker.getLine(lines.get(line - 1));
-                String[] columns = findLine.split(",");
 
                 if (searchPrefix.length() <= prefixSize) {
                     allLines.add(findLine);
                 }
-                else if (findLine.contains(searchPrefix)) {
+                else if (findLine.startsWith(searchPrefix)) {
                     allLines.add(findLine);
                 }
 
@@ -54,19 +74,21 @@ public class Main {
 
             }
 
-            String[] strings = allLines.get(0).split(",");
+            if (allLines.size() > 0) {
 
-            if (strings[1].contains("\"")) {
-                allLines.sort(new StringsComparator(1));
-            }
-            else {
-                allLines.sort(new IntegerComparator(1));
+                // check type of column
+                String[] strings = allLines.get(0).split(",");
+
+                if (strings[1].contains("\"")) {
+                    allLines.sort(new StringsComparator(columnIndex));
+                } else {
+                    allLines.sort(new IntegerComparator(columnIndex));
+                }
             }
 
             for (String line : allLines) {
                 String[] columns = line.split(",");
-                System.out.println(columns[1] + " " + Arrays.toString(columns));
-
+                System.out.println(columns[columnIndex] + " " + Arrays.toString(columns));
             }
 
             long timeEnd = new Date().getTime();

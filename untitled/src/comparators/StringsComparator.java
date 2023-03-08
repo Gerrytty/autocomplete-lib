@@ -1,6 +1,11 @@
+package comparators;
+
 import java.util.Comparator;
 
-public class StringsComparator  implements Comparator<String> {
+/***
+ * Comparator class for comparing strings in lexicographic in specific given column
+ */
+public class StringsComparator implements Comparator<String> {
 
     int columnIndex;
 

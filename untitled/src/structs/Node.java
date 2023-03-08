@@ -1,6 +1,11 @@
+package structs;
+
 import java.util.ArrayList;
 import java.util.List;
 
+/***
+ * Helper class for Prefix tree
+ */
 public class Node {
 
     private String val;
