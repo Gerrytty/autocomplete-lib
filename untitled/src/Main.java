@@ -1,54 +1,81 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Main {
 
-    private static ArrayList<Line> readFromInputStream(InputStream inputStream)
-            throws IOException {
-
-        ArrayList<Line> lines = new ArrayList<>();
-
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
-
-            int currentLine = 1;
-            int currentOffset = 0;
-
-            String line;
-            while ((line = br.readLine()) != null) {
-
-                Line l = new Line(currentLine, line.length(), currentOffset);
-                currentOffset += l.getCountOfBytes() + 1;
-                lines.add(l);
-
-            }
-        }
-        return lines;
-    }
+    static int prefixSize = 10;
 
     public static void main(String[] args) throws IOException {
 
         // memorize a prefix tree in memory
-        FileAnalyser analyser = new FileAnalyser("/home/julia/Downloads/airports.csv");
-        analyser.buildTree(10);
+        FileAnalyser analyser = new FileAnalyser("/home/julia/Downloads/airports.csv", prefixSize);
+        analyser.buildTree();
 
-        long timeStart = new Date().getTime();
+        Scanner scanner = new Scanner(System.in);
+        String searchPrefix = scanner.nextLine();
+        String correctPrefix;
 
-        List<Line> lines = analyser.getLines();
+        while (!searchPrefix.equals("!quit")) {
 
-        List<Integer> prefixLines = analyser.getPrefixLines(1, "Bo");
+            // if we search prefix that longer than max prefix size in tree
+            if (searchPrefix.length() > prefixSize) {
+                correctPrefix = searchPrefix.substring(0, prefixSize);
+            }
+            else {
+                correctPrefix = searchPrefix;
+            }
 
-        LinesWalker walker = new LinesWalker("/home/julia/Downloads/airports.csv");
+            long timeStart = new Date().getTime();
 
-        for (int line : prefixLines) {
-            System.out.println(walker.getLine(lines.get(line)));
+            List<Line> lines = analyser.getLines();
+
+            List<Integer> prefixLines = analyser.getPrefixLines(1, correctPrefix);
+
+            System.out.println(prefixLines);
+
+            LinesWalker walker = new LinesWalker("/home/julia/Downloads/airports.csv");
+
+            int countFoundLines = 0;
+
+            List<String> allLines = new ArrayList<>();
+
+            for (int line : prefixLines) {
+                String findLine = walker.getLine(lines.get(line - 1));
+                String[] columns = findLine.split(",");
+
+                if (searchPrefix.length() <= prefixSize) {
+                    allLines.add(findLine);
+                }
+                else if (findLine.contains(searchPrefix)) {
+                    allLines.add(findLine);
+                }
+
+                countFoundLines++;
+
+            }
+
+            String[] strings = allLines.get(0).split(",");
+
+            if (strings[1].contains("\"")) {
+                allLines.sort(new StringsComparator(1));
+            }
+            else {
+                allLines.sort(new IntegerComparator(1));
+            }
+
+            for (String line : allLines) {
+                String[] columns = line.split(",");
+                System.out.println(columns[1] + " " + Arrays.toString(columns));
+
+            }
+
+            long timeEnd = new Date().getTime();
+            System.out.println("Found " + countFoundLines + " lines");
+            System.out.println(timeEnd - timeStart + " ms");
+
+            searchPrefix = scanner.nextLine();
+
         }
-
-        long timeEnd = new Date().getTime();
-        System.out.println(timeEnd - timeStart + " ms");
-
 
     }
 }

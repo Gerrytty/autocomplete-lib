@@ -9,12 +9,15 @@ public class FileAnalyser {
     private List<Line> lines;
     private List<PrefixTree> trees;
 
-    public FileAnalyser(String pathToFile) {
+    private int prefixSize;
+
+    public FileAnalyser(String pathToFile, int prefixSize) {
         this.pathToFile = pathToFile;
         this.lines = new ArrayList<>();
+        this.prefixSize = prefixSize;
     }
 
-    public void buildTree(int prefixSize) throws FileNotFoundException {
+    public void buildTree() throws FileNotFoundException {
         File file = new File(pathToFile);
         InputStream inputStream = new FileInputStream(file);
 

@@ -40,7 +40,7 @@ public class Line {
 
     @Override
     public String toString() {
-        return "index = " + num + " Count of bytes " + countOfBytes + " offset " + offset + "\n";
+        return "index = " + num + " Count of bytes " + countOfBytes + " offset " + offset;
     }
 
 }
