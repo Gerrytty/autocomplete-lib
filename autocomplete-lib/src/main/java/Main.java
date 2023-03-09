@@ -29,12 +29,12 @@ public class Main {
         }
 
         // memorize a prefix tree in memory
-        FileAnalyser analyser = new FileAnalyserImpl("/home/julia/Downloads/airports.csv", prefixSize);
+        FileAnalyser analyser = new FileAnalyserImpl("airports.csv", prefixSize);
         analyser.setColumnIndex(columnIndex);
         analyser.buildTree();
 
         // Random access for lines in file helper
-        LinesWalker walker = new LinesWalkerImpl("/home/julia/Downloads/airports.csv");
+        LinesWalker walker = new LinesWalkerImpl("airports.csv");
 
         // read user request
         Scanner scanner = new Scanner(System.in);
