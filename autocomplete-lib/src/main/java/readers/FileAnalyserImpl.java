@@ -14,6 +14,8 @@ public class FileAnalyserImpl implements FileAnalyser {
     private List<Line> lines;
     private List<PrefixTree> trees;
 
+    private int columnIndex;
+
     private int prefixSize;
 
     public FileAnalyserImpl(String pathToFile, int prefixSize) {
@@ -43,21 +45,22 @@ public class FileAnalyserImpl implements FileAnalyser {
                 String[] columns = line.split(",");
 
                 if (columnsTree.size() == 0) {
-                    for (int i = 0; i < columns.length; i++) {
-                        columnsTree.add(new PrefixTree());
-                    }
+                    columnsTree.add(new PrefixTree());
+//                    for (int i = 0; i < columns.length; i++) {
+//                        columnsTree.add(new PrefixTree());
+//                    }
                 }
 
-                for (int i = 0; i < columnsTree.size(); i++) {
+                for (PrefixTree prefixTree : columnsTree) {
 
-                    String columnString = columns[i];
+                    String columnString = columns[columnIndex];
                     columnString = columnString.toLowerCase();
                     columnString = columnString.replace("\"", "");
 
                     int maxPrefix = Math.min(prefixSize, columnString.length());
                     columnString = columnString.substring(0, maxPrefix);
 
-                    columnsTree.get(i).addWord(columnString, currentLine);
+                    prefixTree.addWord(columnString, currentLine);
                 }
 
                 currentLine++;
@@ -73,10 +76,14 @@ public class FileAnalyserImpl implements FileAnalyser {
     }
 
     public List<Integer> getPrefixLines(int columnIndex, String prefix) {
-        return trees.get(columnIndex).getPrefixLines(prefix.toLowerCase());
+        return trees.get(0).getPrefixLines(prefix.toLowerCase());
     }
 
     public List<Line> getLines() {
         return lines;
+    }
+
+    public void setColumnIndex(int columnIndex) {
+        this.columnIndex = columnIndex;
     }
 }

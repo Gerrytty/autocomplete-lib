@@ -6,12 +6,13 @@ import readers.LinesWalker;
 import readers.LinesWalkerImpl;
 import structs.Line;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.*;
 
 public class Main {
 
-    static int prefixSize = 10;
+    // max word in prefix tree is
+    static int prefixSize = 3;
     static int columnIndex;
 
     public static void main(String[] args) throws IOException {
@@ -19,17 +20,21 @@ public class Main {
         if (args.length > 0) {
             columnIndex = Integer.parseInt(args[0]);
             if (columnIndex < 1) {
-                System.out.println("incorrect index, indexing starts from 1");
+                System.out.println("incorrect index, indexing starts from 1, set index to 1 column");
                 columnIndex = 1;
             }
         }
         else {
-            columnIndex = 0;
+            columnIndex = 1;
         }
 
         // memorize a prefix tree in memory
         FileAnalyser analyser = new FileAnalyserImpl("/home/julia/Downloads/airports.csv", prefixSize);
+        analyser.setColumnIndex(columnIndex);
         analyser.buildTree();
+
+        // Random access for lines in file helper
+        LinesWalker walker = new LinesWalkerImpl("/home/julia/Downloads/airports.csv");
 
         // read user request
         Scanner scanner = new Scanner(System.in);
@@ -52,9 +57,6 @@ public class Main {
             List<Line> lines = analyser.getLines();
             List<Integer> prefixLines = analyser.getPrefixLines(columnIndex, correctPrefix);
 
-            // Random access for lines in file helper
-            LinesWalker walker = new LinesWalkerImpl("/home/julia/Downloads/airports.csv");
-
             int countFoundLines = 0;
 
             List<String> allLines = new ArrayList<>();
@@ -63,14 +65,16 @@ public class Main {
 
                 String findLine = walker.getLine(lines.get(line - 1));
 
+                String[] strings = findLine.split(",");
+
                 if (searchPrefix.length() <= prefixSize) {
                     allLines.add(findLine);
+                    countFoundLines++;
                 }
-                else if (findLine.startsWith(searchPrefix)) {
+                else if (strings[columnIndex].replace("\"", "").toLowerCase().startsWith(searchPrefix)) {
                     allLines.add(findLine);
+                    countFoundLines++;
                 }
-
-                countFoundLines++;
 
             }
 

@@ -12,4 +12,6 @@ public interface FileAnalyser {
 
     List<Line> getLines();
 
+    void setColumnIndex(int columnIndex);
+
 }

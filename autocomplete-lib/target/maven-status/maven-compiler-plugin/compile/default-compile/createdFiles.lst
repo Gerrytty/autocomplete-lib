@@ -1,0 +1,10 @@
+Main.class
+comparators/IntegerComparator.class
+structs/PrefixTree.class
+readers/FileAnalyser.class
+readers/FileAnalyserImpl.class
+readers/LinesWalker.class
+structs/Node.class
+structs/Line.class
+comparators/StringsComparator.class
+readers/LinesWalkerImpl.class
