@@ -55,7 +55,14 @@ public class Main {
                 if (strings[columnIndex].contains("\"")) {
                     allLines.sort(new StringsComparator(columnIndex, ","));
                 } else {
-                    allLines.sort(new NumberComparator(columnIndex, ","));
+
+                    try {
+                        allLines.sort(new NumberComparator(columnIndex, ","));
+                        // if number column has incorrect symbols
+                    } catch (NumberFormatException e) {
+                        allLines.sort(new StringsComparator(columnIndex, ","));
+                    }
+
                 }
             }
 
