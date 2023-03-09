@@ -5,12 +5,12 @@ import java.util.Comparator;
 /***
  * Comparator class for comparing nums in specific given column
  */
-public class IntegerComparator implements Comparator<String> {
+public class NumberComparator implements Comparator<String> {
 
     private int columnIndex;
     private String separator;
 
-    public IntegerComparator(int columnIndex, String separator) {
+    public NumberComparator(int columnIndex, String separator) {
         this.columnIndex = columnIndex;
         this.separator = separator;
     }

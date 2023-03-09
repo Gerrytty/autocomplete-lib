@@ -1,4 +1,4 @@
-import comparators.IntegerComparator;
+import comparators.NumberComparator;
 import comparators.StringsComparator;
 import core.AutoComplete;
 import core.AutoCompleteImpl;
@@ -55,7 +55,7 @@ public class Main {
                 if (strings[columnIndex].contains("\"")) {
                     allLines.sort(new StringsComparator(columnIndex, ","));
                 } else {
-                    allLines.sort(new IntegerComparator(columnIndex, ","));
+                    allLines.sort(new NumberComparator(columnIndex, ","));
                 }
             }
 
