@@ -2,6 +2,7 @@
 /home/julia/autocomplete-lib/autocomplete-lib/src/main/java/readers/LinesWalkerImpl.java
 /home/julia/autocomplete-lib/autocomplete-lib/src/main/java/comparators/StringsComparator.java
 /home/julia/autocomplete-lib/autocomplete-lib/src/main/java/Main.java
+/home/julia/autocomplete-lib/autocomplete-lib/src/main/java/comparators/NumberComparator.java
 /home/julia/autocomplete-lib/autocomplete-lib/src/main/java/structs/PrefixTree.java
 /home/julia/autocomplete-lib/autocomplete-lib/src/main/java/core/AutoComplete.java
 /home/julia/autocomplete-lib/autocomplete-lib/src/main/java/structs/Line.java
@@ -9,4 +10,3 @@
 /home/julia/autocomplete-lib/autocomplete-lib/src/main/java/readers/FileAnalyserImpl.java
 /home/julia/autocomplete-lib/autocomplete-lib/src/main/java/core/AutoCompleteImpl.java
 /home/julia/autocomplete-lib/autocomplete-lib/src/main/java/structs/Node.java
-/home/julia/autocomplete-lib/autocomplete-lib/src/main/java/comparators/IntegerComparator.java

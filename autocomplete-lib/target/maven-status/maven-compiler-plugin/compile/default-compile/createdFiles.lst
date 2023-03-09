@@ -1,5 +1,5 @@
 Main.class
-comparators/IntegerComparator.class
+comparators/NumberComparator.class
 structs/PrefixTree.class
 readers/FileAnalyser.class
 readers/FileAnalyserImpl.class
