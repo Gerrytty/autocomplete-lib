@@ -4,4 +4,4 @@ file airports.csv should be near the jar file
 
 
 #### Demo video
-[![Watch the video](https://youtu.be/aX_f8xJr44E)]
+Is availiable on https://youtu.be/aX_f8xJr44E
