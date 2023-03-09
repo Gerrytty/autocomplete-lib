@@ -3,8 +3,10 @@ comparators/IntegerComparator.class
 structs/PrefixTree.class
 readers/FileAnalyser.class
 readers/FileAnalyserImpl.class
+core/AutoCompleteImpl.class
 readers/LinesWalker.class
 structs/Node.class
 structs/Line.class
 comparators/StringsComparator.class
+core/AutoComplete.class
 readers/LinesWalkerImpl.class

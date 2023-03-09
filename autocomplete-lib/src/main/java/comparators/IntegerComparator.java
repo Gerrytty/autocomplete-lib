@@ -7,10 +7,12 @@ import java.util.Comparator;
  */
 public class IntegerComparator implements Comparator<String> {
 
-    int columnIndex;
+    private int columnIndex;
+    private String separator;
 
-    public IntegerComparator(int columnIndex) {
+    public IntegerComparator(int columnIndex, String separator) {
         this.columnIndex = columnIndex;
+        this.separator = separator;
     }
 
     public int compare(String obj1, String obj2) {
@@ -24,8 +26,8 @@ public class IntegerComparator implements Comparator<String> {
             return 1;
         }
 
-        double i1 = Double.parseDouble(obj1.split(",")[columnIndex]);
-        double i2 = Double.parseDouble(obj2.split(",")[columnIndex]);
+        double i1 = Double.parseDouble(obj1.split(separator)[columnIndex]);
+        double i2 = Double.parseDouble(obj2.split(separator)[columnIndex]);
 
         return Double.compare(i1, i2);
     }

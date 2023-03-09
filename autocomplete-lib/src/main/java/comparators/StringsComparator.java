@@ -7,10 +7,12 @@ import java.util.Comparator;
  */
 public class StringsComparator implements Comparator<String> {
 
-    int columnIndex;
+    private int columnIndex;
+    private String separator;
 
-    public StringsComparator(int columnIndex) {
+    public StringsComparator(int columnIndex, String separator) {
         this.columnIndex = columnIndex;
+        this.separator = separator;
     }
 
     public int compare(String obj1, String obj2) {

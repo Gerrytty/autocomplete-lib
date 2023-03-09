@@ -12,16 +12,18 @@ public class FileAnalyserImpl implements FileAnalyser {
 
     private String pathToFile;
     private List<Line> lines;
-    private List<PrefixTree> trees;
+
+    private PrefixTree tree;
 
     private int columnIndex;
 
     private int prefixSize;
 
-    public FileAnalyserImpl(String pathToFile, int prefixSize) {
+    public FileAnalyserImpl(String pathToFile, int columnIndex, int prefixSize) {
         this.pathToFile = pathToFile;
         this.lines = new ArrayList<>();
         this.prefixSize = prefixSize;
+        this.columnIndex = columnIndex;
     }
 
     public void buildTree() throws FileNotFoundException {
@@ -33,7 +35,7 @@ public class FileAnalyserImpl implements FileAnalyser {
             int currentLine = 1;
             int currentOffset = 0;
 
-            List<PrefixTree> columnsTree = new ArrayList<>();
+            PrefixTree columnsTree = new PrefixTree();
 
             String line;
             while ((line = br.readLine()) != null) {
@@ -44,30 +46,20 @@ public class FileAnalyserImpl implements FileAnalyser {
 
                 String[] columns = line.split(",");
 
-                if (columnsTree.size() == 0) {
-                    columnsTree.add(new PrefixTree());
-//                    for (int i = 0; i < columns.length; i++) {
-//                        columnsTree.add(new PrefixTree());
-//                    }
-                }
+                String columnString = columns[columnIndex];
+                columnString = columnString.toLowerCase();
+                columnString = columnString.replace("\"", "");
 
-                for (PrefixTree prefixTree : columnsTree) {
+                int maxPrefix = Math.min(prefixSize, columnString.length());
+                columnString = columnString.substring(0, maxPrefix);
 
-                    String columnString = columns[columnIndex];
-                    columnString = columnString.toLowerCase();
-                    columnString = columnString.replace("\"", "");
-
-                    int maxPrefix = Math.min(prefixSize, columnString.length());
-                    columnString = columnString.substring(0, maxPrefix);
-
-                    prefixTree.addWord(columnString, currentLine);
-                }
+                columnsTree.addWord(columnString, currentLine);
 
                 currentLine++;
 
             }
 
-            trees = columnsTree;
+            tree = columnsTree;
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -76,7 +68,7 @@ public class FileAnalyserImpl implements FileAnalyser {
     }
 
     public List<Integer> getPrefixLines(int columnIndex, String prefix) {
-        return trees.get(0).getPrefixLines(prefix.toLowerCase());
+        return tree.getPrefixLines(prefix.toLowerCase());
     }
 
     public List<Line> getLines() {
