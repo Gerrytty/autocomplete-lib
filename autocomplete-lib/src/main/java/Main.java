@@ -16,6 +16,8 @@ public class Main {
 
         String path = "airports.csv";
 
+        Comparator<String> comparator = null;
+
         if (args.length > 0) {
             columnIndex = Integer.parseInt(args[0]);
             if (columnIndex < 1) {
@@ -31,16 +33,27 @@ public class Main {
             columnIndex = 1;
         }
 
-        AutoComplete autoComplete = new AutoCompleteImpl(path, columnIndex, prefixSize);
-        autoComplete.prepare();
+        boolean fileIsOk = false;
+        AutoComplete autoComplete = null;
+
+        try {
+            autoComplete = new AutoCompleteImpl(path, columnIndex, prefixSize);
+            autoComplete.prepare();
+            fileIsOk = true;
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+        }
+
 
         // read user request
         Scanner scanner = new Scanner(System.in);
         String searchPrefix = scanner.nextLine();
 
-        while (!searchPrefix.equals("!quit")) {
+        BufferedWriter output = new BufferedWriter(new OutputStreamWriter(System.out));
 
-            // measure time only for search
+        while (!searchPrefix.equals("!quit") && fileIsOk) {
+
+            // measure time only for search + sort + print
             long timeStart = new Date().getTime();
 
             // get lines that starts with the given prefix
@@ -52,27 +65,33 @@ public class Main {
                 // check type of column
                 String[] strings = allLines.get(0).split(",");
 
-                if (strings[columnIndex].contains("\"")) {
-                    allLines.sort(new StringsComparator(columnIndex, ","));
-                } else {
-
-                    try {
-                        allLines.sort(new NumberComparator(columnIndex, ","));
-                        // if number column has incorrect symbols
-                    } catch (NumberFormatException e) {
-                        allLines.sort(new StringsComparator(columnIndex, ","));
+                if (comparator == null) {
+                    if (strings[columnIndex].contains("\"")) {
+                        comparator = new StringsComparator(columnIndex, ",");
                     }
-
+                    else {
+                        new NumberComparator(columnIndex, ",");
+                    }
                 }
+
+                try {
+                    allLines.sort(comparator);
+                } catch (NumberFormatException e) {
+                    allLines.sort(new StringsComparator(columnIndex, ","));
+                }
+
             }
 
             // print lines
             for (String line : allLines) {
                 String[] columns = line.split(",");
-                System.out.println(columns[columnIndex] + " " + Arrays.toString(columns));
+                output.write(columns[columnIndex] + " " + Arrays.toString(columns) + "\n");
             }
 
+            output.flush();
+
             long timeEnd = new Date().getTime();
+
             System.out.println("Found " + allLines.size() + " lines");
             System.out.println(timeEnd - timeStart + " ms");
 
